@@ -1,0 +1,19 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: customer-cron-job
+spec:
+  schedule: "*/3 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: customer-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command: ["python3"]
+            args: ["-c", "/usr/src/app/customer.py"]
+            env:
+            - name: MY_VAR
+              value: "milad"
+          restartPolicy: OnFailure

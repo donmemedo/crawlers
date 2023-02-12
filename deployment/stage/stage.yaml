@@ -12,10 +12,10 @@ spec:
           - name: customer-cron-job
             image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
             command:
-            - python3
+            - "python3"
             - "-c"
-            - /usr/src/app/customer.py
+            - "customer.py"
             env:
-            - name: MY_VAR
-              value: "milad"
+            - name: DATABASE_URL
+              value: "mongodb://root:root@mongo-marketer.stg-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure

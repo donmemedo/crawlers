@@ -4,6 +4,8 @@ metadata:
   name: customer-cron-job
 spec:
   schedule: "*/3 * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       template:
@@ -13,8 +15,7 @@ spec:
             image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
             command:
             - "python3"
-            - "-c"
-            - "customer.py"
+            - "/usr/src/app/customer.py"
             env:
             - name: DATABASE_URL
               value: "mongodb://root:root@mongo-marketer.stg-marketer-db.svc.cluster.local:27017/"

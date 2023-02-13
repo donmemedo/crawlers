@@ -47,9 +47,15 @@ def getter():
         else:
             logger.info(f'Page {page_index+1} of {1+total//50} Pages')
             for record in response:
-                collection.insert_one(record)
-                logger.info(f'Added: {record.get("TradeNumber")}, {record.get("TradeDate")}, {record.get("MarketInstrumentISIN")} \n')
-                logger.info(f"TradeNumber {record.get('TradeNumber')} added to mongodb")
+                try:
+                    collection.insert_one(record)
+                    logger.info(f'Added: {record.get("TradeNumber")}, {record.get("TradeDate")}, {record.get("MarketInstrumentISIN")} \n')
+                    logger.info(
+                        f"TradeNumber {record.get('TradeNumber')} added to mongodb"
+                    )
+
+                    except errors.DuplicateKeyError as e:
+                        logging.error("%s" % e)
             logger.info("\t \t All were gotten!!!")
             logger.info(
                 f"Time of getting List of Customers of {date.today()} is: {datetime.now()}"

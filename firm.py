@@ -2,7 +2,12 @@ import logging
 import datetime
 import schedule
 import requests
+import os
 from pymongo import MongoClient, errors
+
+
+with open("/etc/hosts", "a") as file:
+    file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
 
 
 def get_database():

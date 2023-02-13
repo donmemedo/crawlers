@@ -69,7 +69,7 @@ if __name__ == "__main__":
     logger.debug("it has been started to log...")
 
     
-    start_date = date(2023, 2, 11)
+    start_date = date(2023, 1, 23)
     end_date = datetime.now()
     
 

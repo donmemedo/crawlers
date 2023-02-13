@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     
     start_date = date(2023, 1, 23)
-    end_date = datetime.now()
+    end_date = datetime.now().date()
     
 
     db = get_database()

@@ -37,7 +37,7 @@ def daterange(start_date, end_date):
 
 
 def getter():
-    print(datetime.now())
+    logger.info(datetime.now())
     page_index=0
     while True:
         response, total = get_trades_list(page_index=page_index, date=date.today())
@@ -45,12 +45,12 @@ def getter():
             logger.info("list is empty")
             break
         else:
-            print(f'Page {page_index+1} of {1+total//50} Pages')
+            logger.info(f'Page {page_index+1} of {1+total//50} Pages')
             for record in response:
                 collection.insert_one(record)
                 logger.info(f'Added: {record.get("TradeNumber")}, {record.get("TradeDate")}, {record.get("MarketInstrumentISIN")} \n')
                 logger.info(f"TradeNumber {record.get('TradeNumber')} added to mongodb")
-            print("\t \t All were gotten!!!")
+            logger.info("\t \t All were gotten!!!")
             logger.info(
                 f"Time of getting List of Customers of {date.today()} is: {datetime.now()}"
             )
@@ -60,8 +60,6 @@ def getter():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        filename="Trades.log",
-        filemode="a",
         encoding="utf-8",
         format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
         level=logging.DEBUG,
@@ -70,8 +68,8 @@ if __name__ == "__main__":
     logger.setLevel(logging.DEBUG)
     logger.debug("it has been started to log...")
 
-    #ToDo: Change Start day to 2023/02/01
-    start_date = date(2023, 1, 15)
+    
+    start_date = date(2023, 2, 11)
     end_date = datetime.now()
     
 
@@ -80,27 +78,26 @@ if __name__ == "__main__":
 
     for single_date in daterange(start_date, end_date):
         selected_date = single_date.strftime("%Y-%m-%d")
-        print(selected_date)
+        logger.info(selected_date)
         page_index = 0
 
         logger.info(f"Getting trades of {single_date}")
 
         while True:
-        # while page_index < 1:
             response, total = get_trades_list(page_index=page_index, date=selected_date)
 
             if not response:
                 logger.info("list is empty")
                 break
             else:
-                print(f'Page {page_index+1} of {1+total//50} Pages')
+                logger.info(f'Page {page_index+1} of {1+total//50} Pages')
                 for record in response:
                     collection.insert_one(record)
                     logger.info(f'Added: {record.get("TradeNumber")}, {record.get("TradeDate")}, {record.get("MarketInstrumentISIN")} \n')
                     logger.info(
                         f"TradeNumber {record.get('TradeNumber')} added to mongodb"
                     )
-                print("\t \t All were gotten!!!")
+                logger.info("\t \t All were gotten!!!")
                 logger.info(
                     f"Time of getting List of Customers of {selected_date} is: {datetime.now()}"
                 )
@@ -108,4 +105,3 @@ if __name__ == "__main__":
             page_index += 1
     getter()
     logger.info(f"Ending Time of getting List of Trades in Today: {datetime.now()}")
-    print(f"Ending Time of getting List of Trades in Today: {datetime.now()}")

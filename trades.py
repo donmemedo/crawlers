@@ -53,9 +53,8 @@ def getter():
                     logger.info(
                         f"TradeNumber {record.get('TradeNumber')} added to mongodb"
                     )
-
-                    except errors.DuplicateKeyError as e:
-                        logging.error("%s" % e)
+                except errors.DuplicateKeyError as e:
+                    logging.error("%s" % e)
             logger.info("\t \t All were gotten!!!")
             logger.info(
                 f"Time of getting List of Customers of {date.today()} is: {datetime.now()}"

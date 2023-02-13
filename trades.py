@@ -3,7 +3,11 @@ from datetime import date, timedelta, datetime
 import schedule
 import requests
 from pymongo import MongoClient, errors
+import os
 
+
+with open("/etc/hosts", "a") as file:
+    file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
 
 
 def get_database():

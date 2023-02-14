@@ -1,6 +1,5 @@
 ## pull official base image
-#FROM python:3.10
-From registry.tech1a.co:81/repository/tech1a-docker-registry/python/python:3.9
+FROM registry.tech1a.co:81/repository/tech1a-docker-registry/python/python:3.9
 
 # set working directory
 WORKDIR /usr/src/app
@@ -21,6 +20,3 @@ RUN pip install -r requirements.txt
 
 # add app
 COPY . .
-#CMD python customer.py
-#CMD python firm.py
-#CMD python trades.py

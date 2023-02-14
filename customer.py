@@ -63,11 +63,6 @@ def getter(size=10, date="2023-01-31"):
     )
 
 
-#f = open("./dates.txt", "r")
-#cc = f.read().splitlines()
-#for i in range(len(cc)):
-#    getter(date=cc[i])
-#print(f"DB was Gotten from {cc[0]} to {cc[len(cc)-1]}")
 today = datetime.date.today()
 logger.info(datetime.datetime.now())
 

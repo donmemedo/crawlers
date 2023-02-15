@@ -77,11 +77,16 @@ def getter(size=10, date="2023-01-31"):
         size (int, optional): _description_. Defaults to 10.
         date (str, optional): _description_. Defaults to "2023-01-31".
     """
-    total_records = requests.get(
+    temp_req = requests.get(
         "https://tadbirwrapper.tavana.net/tadbir/GetFirmList",
         params={'request.date': date, 'request.pageIndex': 0,
                 'request.pageSize': 1},
-        timeout=100).json()["TotalRecords"]
+        timeout=100)
+    if temp_req.status_code != 200:
+        logging.critical("Http response code: %s", temp_req.status_code)
+        total_records = 0
+    else:
+        total_records = temp_req.json()["TotalRecords"]
     logger.info("\t  \t  \t  %s \t  \t  \t  %s",date,total_records)
     for i in range(0, total_records // 10 + 1):
         logger.info("Getting Page %d from %d pages", i + 1, total_records // 10 + 1)

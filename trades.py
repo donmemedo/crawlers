@@ -49,7 +49,7 @@ def get_trades_list(page_size=50, page_index=0, selected_date="2022-12-31"):
         timeout=100)
     if req.status_code != 200:
         logging.critical("Http response code: %s", req.status_code)
-        return ""
+        return "", 0
     response = req.json()
     return response.get("Result"), response.get("TotalRecords")
 

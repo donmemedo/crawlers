@@ -13,7 +13,7 @@ import requests
 from pymongo import MongoClient, errors
 
 
-with open("/etc/hosts", "a") as file:
+with open("/etc/hosts", "a", encoding='utf-8') as file:
     file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
 
 
@@ -23,10 +23,10 @@ def get_database():
     Returns:
         _type_: _description_
     """
-    CONNECTION_STRING = os.environ.get("DATABASE_URL")
-    client = MongoClient(CONNECTION_STRING)
-    db = client["brokerage"]
-    return db
+    connection_string = os.environ.get("DATABASE_URL")
+    client = MongoClient(connection_string)
+    database = client["brokerage"]
+    return database
 
 
 def get_firm_list(page_size=10, page_index=0, from_date="2023-01-31"):
@@ -44,13 +44,16 @@ def get_firm_list(page_size=10, page_index=0, from_date="2023-01-31"):
         _type_: _description_
     """
     req = requests.get(
-        f"https://tadbirwrapper.tavana.net/tadbir/GetFirmList?request.date={from_date}&request.pageIndex={page_index}&request.pageSize={page_size}"
+        "https://tadbirwrapper.tavana.net/tadbir/GetFirmList",
+        params={'request.date': from_date, 'request.pageIndex': page_index,
+                'request.pageSize': page_size},
+        timeout=100
     )
     if req.status_code != 200:
-        raise RuntimeError(f"Http response code {req.status_code}")
-    else:
-        response = req.json()
-        return response.get("Result")
+        logging.critical("Http response code: %s", req.status_code)
+        return ""
+    response = req.json()
+    return response.get("Result")
 
 
 logging.basicConfig(
@@ -75,34 +78,32 @@ def getter(size=10, date="2023-01-31"):
         date (str, optional): _description_. Defaults to "2023-01-31".
     """
     total_records = requests.get(
-        f"https://tadbirwrapper.tavana.net/tadbir/GetFirmList?request.date={date}&request.pageIndex={0}&request.pageSize={1}"
-    ).json()["TotalRecords"]
-    logger.info(f"\t  \t  \t  {date} \t  \t  \t  {total_records}")
+        "https://tadbirwrapper.tavana.net/tadbir/GetFirmList",
+        params={'request.date': date, 'request.pageIndex': 0,
+                'request.pageSize': 1},
+        timeout=100).json()["TotalRecords"]
+    logger.info("\t  \t  \t  %s \t  \t  \t  %s",date,total_records)
     for i in range(0, total_records // 10 + 1):
-        logger.info(f"Getting Page{i+1} from {total_records // 10 + 1} pages")
+        logger.info("Getting Page %d from %d pages", i + 1, total_records // 10 + 1)
         records = get_firm_list(size, i, date)
-
         for record in records:
             if record is None:
-                logger.info(f"Record is empty.")
+                logger.info("Record is empty.")
                 continue
-            else:
-                try:
-                    collection.insert_one(record)
-                    logger.info(f"Record {record.get('PAMCode')} added to Mongodb")
-                except errors.DuplicateKeyError as e:
-                    logging.error("%s" % e)
+            try:
+                collection.insert_one(record)
+                logger.info("Record %s added to Mongodb", record.get('PAMCode'))
+            except errors.DuplicateKeyError as dup_error:
+                logging.error("%s", dup_error)
 
     logger.info("\n \n \n \t \t All were gotten!!!")
-    logger.info(
-        f"Time of getting List of Firms of {date} is: {datetime.datetime.now()}"
-    )
+    logger.info("Time of getting List of Firms of %s is: %s",
+                date, datetime.datetime.now())
 
 
 getter(date='')
 today = datetime.date.today()
 logger.info(datetime.datetime.now())
 getter(date=today)
-logger.info(
-    f"Ending Time of getting List of Registered Firms in Today: {datetime.datetime.now()}"
-)
+logger.info("Ending Time of getting List of Registered Firms in Today: %s",
+            datetime.datetime.now())

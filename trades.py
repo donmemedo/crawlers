@@ -8,11 +8,11 @@ Returns:
 """
 import logging
 import os
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 import requests
 from pymongo import MongoClient, errors
 
-with open("/etc/hosts", "a") as file:
+with open("/etc/hosts", "a", encoding='utf-8') as file:
     file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
 
 
@@ -22,19 +22,19 @@ def get_database():
     Returns:
         _type_: _description_
     """
-    CONNECTION_STRING = os.environ.get("DATABASE_URL")
-    client = MongoClient(CONNECTION_STRING)
-    db = client["brokerage"]
-    return db
+    connection_string = os.environ.get("DATABASE_URL")
+    client = MongoClient(connection_string)
+    database = client["brokerage"]
+    return database
 
 
-def get_trades_list(page_size=50, page_index=0, date="2022-12-31"):
+def get_trades_list(page_size=50, page_index=0, selected_date="2022-12-31"):
     """_summary_
 
     Args:
         page_size (int, optional): _description_. Defaults to 50.
         page_index (int, optional): _description_. Defaults to 0.
-        date (str, optional): _description_. Defaults to "2022-12-31".
+        selected_date (str, optional): _description_. Defaults to "2022-12-31".
 
     Raises:
         RuntimeError: _description_
@@ -43,16 +43,15 @@ def get_trades_list(page_size=50, page_index=0, date="2022-12-31"):
         _type_: _description_
     """
     req = requests.get(
-        f"https://tadbirwrapper.tavana.net/tadbir/GetDailyTradeList?request.date={date}&request.pageIndex={page_index}&request.pageSize={page_size}"
-    )
-
+        "https://tadbirwrapper.tavana.net/tadbir/GetDailyTradeList",
+        params={'request.date': selected_date, 'request.pageIndex': page_index,
+                'request.pageSize': page_size},
+        timeout=100)
     if req.status_code != 200:
-        raise RuntimeError(f"Http response code {req.status_code}")
-
-    else:
-        response = req.json()
-
-        return response.get("Result"), response.get("TotalRecords")
+        logging.critical("Http response code: %s", req.status_code)
+        return ""
+    response = req.json()
+    return response.get("Result"), response.get("TotalRecords")
 
 
 def getter():
@@ -60,29 +59,25 @@ def getter():
     """
     logger.info(datetime.now())
     page_index = 0
-    logger.info(f"Getting trades of {date.today()}")
+    logger.info("Getting trades of %s", date.today())
     while True:
-        response, total = get_trades_list(page_index=page_index, date=date.today())
+        response, total = get_trades_list(page_index=page_index, selected_date=date.today())
         if not response:
             logger.info("\t \t \t List is Empty!!!")
             break
-        else:
-            logger.info(f"Page {page_index+1} of {1+total//50} Pages")
-            for record in response:
-                try:
-                    collection.insert_one(record)
-                    logger.info(
-                        f'Added: {record.get("TradeNumber")}, {record.get("TradeDate")}, {record.get("MarketInstrumentISIN")} \n'
-                    )
-                    logger.info(
-                        f"TradeNumber {record.get('TradeNumber')} added to mongodb"
-                    )
-                except errors.DuplicateKeyError as e:
-                    logging.error("%s" % e)
-            logger.info("\t \t All were gotten!!!")
-            logger.info(
-                f"Time of getting List of Customers of {date.today()} is: {datetime.now()}"
-            )
+        logger.info("Page %d of %d Pages", page_index + 1, 1 + total // 50)
+        for record in response:
+            try:
+                collection.insert_one(record)
+                logger.info(
+                    "Added: %s, %s, %s \n", record.get("TradeNumber"),
+                    record.get("TradeDate"), record.get("MarketInstrumentISIN"))
+                logger.info("TradeNumber %s added to mongodb", record.get('TradeNumber'))
+            except errors.DuplicateKeyError as dupp_error:
+                logging.error("%s", dupp_error)
+        logger.info("\t \t All were gotten!!!")
+        logger.info("Time of getting List of Customers of %s is: %s",
+                    date.today(), datetime.now())
         page_index += 1
 
 
@@ -102,4 +97,4 @@ if __name__ == "__main__":
     db = get_database()
     collection = db["trades"]
     getter()
-    logger.info(f"Ending Time of getting List of Trades in Today: {datetime.now()}")
+    logger.info("Ending Time of getting List of Trades in Today: %s", datetime.now())

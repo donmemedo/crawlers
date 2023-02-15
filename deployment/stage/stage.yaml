@@ -43,3 +43,26 @@ spec:
             - name: DATABASE_URL
               value: "mongodb://root:root@mongo-marketer.stg-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: firms-cron-job
+spec:
+  schedule: "45 23 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: firms-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/firm.py"
+            env:
+            - name: DATABASE_URL
+              value: "mongodb://root:root@mongo-marketer.stg-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure

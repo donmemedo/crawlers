@@ -1,7 +1,15 @@
-import logging
+"""_summary_
+
+Raises:
+    RuntimeError: _description_
+
+Returns:
+    _type_: _description_
+"""
 import datetime
-import requests
+import logging
 import os
+import requests
 from pymongo import MongoClient, errors
 
 
@@ -10,6 +18,11 @@ with open("/etc/hosts", "a") as file:
 
 
 def get_database():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
     CONNECTION_STRING = os.environ.get("DATABASE_URL")
     client = MongoClient(CONNECTION_STRING)
     db = client["brokerage"]
@@ -17,7 +30,22 @@ def get_database():
 
 
 def get_firm_list(page_size=10, page_index=0, from_date="2023-01-31"):
-    req = requests.get(f"https://tadbirwrapper.tavana.net/tadbir/GetFirmList?request.date={from_date}&request.pageIndex={page_index}&request.pageSize={page_size}")
+    """_summary_
+
+    Args:
+        page_size (int, optional): _description_. Defaults to 10.
+        page_index (int, optional): _description_. Defaults to 0.
+        from_date (str, optional): _description_. Defaults to "2023-01-31".
+
+    Raises:
+        RuntimeError: _description_
+
+    Returns:
+        _type_: _description_
+    """
+    req = requests.get(
+        f"https://tadbirwrapper.tavana.net/tadbir/GetFirmList?request.date={from_date}&request.pageIndex={page_index}&request.pageSize={page_size}"
+    )
     if req.status_code != 200:
         raise RuntimeError(f"Http response code {req.status_code}")
     else:
@@ -40,7 +68,15 @@ collection = db["firms"]
 
 
 def getter(size=10, date="2023-01-31"):
-    total_records = requests.get(f"https://tadbirwrapper.tavana.net/tadbir/GetFirmList?request.date={date}&request.pageIndex={0}&request.pageSize={1}").json()["TotalRecords"]
+    """_summary_
+
+    Args:
+        size (int, optional): _description_. Defaults to 10.
+        date (str, optional): _description_. Defaults to "2023-01-31".
+    """
+    total_records = requests.get(
+        f"https://tadbirwrapper.tavana.net/tadbir/GetFirmList?request.date={date}&request.pageIndex={0}&request.pageSize={1}"
+    ).json()["TotalRecords"]
     logger.info(f"\t  \t  \t  {date} \t  \t  \t  {total_records}")
     for i in range(0, total_records // 10 + 1):
         logger.info(f"Getting Page{i+1} from {total_records // 10 + 1} pages")
@@ -63,14 +99,9 @@ def getter(size=10, date="2023-01-31"):
     )
 
 
-#f = open("./dates.txt", "r")
-#cc = f.read().splitlines()
-#for i in range(len(cc)):
-#    getter(date=cc[i])
-#print(f"DB was Gotten from {cc[0]} to {cc[len(cc)-1]}")
+getter(date='')
 today = datetime.date.today()
 logger.info(datetime.datetime.now())
-
 getter(date=today)
 logger.info(
     f"Ending Time of getting List of Registered Firms in Today: {datetime.datetime.now()}"

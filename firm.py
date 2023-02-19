@@ -29,33 +29,6 @@ def get_database():
     return database
 
 
-def get_firm_list(page_size=10, page_index=0, from_date="2023-01-31"):
-    """_summary_
-
-    Args:
-        page_size (int, optional): _description_. Defaults to 10.
-        page_index (int, optional): _description_. Defaults to 0.
-        from_date (str, optional): _description_. Defaults to "2023-01-31".
-
-    Raises:
-        RuntimeError: _description_
-
-    Returns:
-        _type_: _description_
-    """
-    req = requests.get(
-        "https://tadbirwrapper.tavana.net/tadbir/GetFirmList",
-        params={'request.date': from_date, 'request.pageIndex': page_index,
-                'request.pageSize': page_size},
-        timeout=100
-    )
-    if req.status_code != 200:
-        logging.critical("Http response code: %s", req.status_code)
-        return ""
-    response = req.json()
-    return response.get("Result")
-
-
 logging.basicConfig(
     encoding="utf-8",
     format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
@@ -88,9 +61,20 @@ def getter(size=10, date="2023-01-31"):
     else:
         total_records = temp_req.json()["TotalRecords"]
     logger.info("\t  \t  \t  %s \t  \t  \t  %s",date,total_records)
-    for i in range(0, total_records // 10 + 1):
-        logger.info("Getting Page %d from %d pages", i + 1, total_records // 10 + 1)
-        records = get_firm_list(size, i, date)
+    for page in range(0, total_records // 10 + 1):
+        logger.info("Getting Page %d from %d pages", page + 1, total_records // 10 + 1)
+        req = requests.get(
+            "https://tadbirwrapper.tavana.net/tadbir/GetFirmList",
+            params={'request.date': date, 'request.pageIndex': page,
+                    'request.pageSize': size},
+            timeout=100
+        )
+        if req.status_code != 200:
+            logging.critical("Http response code: %s", req.status_code)
+            records = ""
+        else:
+            response = req.json()
+            records = response.get("Result")
         for record in records:
             if record is None:
                 logger.info("Record is empty.")

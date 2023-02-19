@@ -9,9 +9,9 @@ Returns:
 """
 import datetime
 import logging
-import os
 import requests
 from pymongo import MongoClient, errors
+from config import setting
 
 
 with open("/etc/hosts", "a", encoding='utf-8') as file:
@@ -19,14 +19,14 @@ with open("/etc/hosts", "a", encoding='utf-8') as file:
 
 
 def get_database():
-    """_summary_
+    """Getting Database
 
     Returns:
-        _type_: _description_
+        Database: Mongo Database
     """
-    connection_sting = os.environ.get("DATABASE_URL")
+    connection_sting = setting.MONGO_CONNECTION_STRING
     client = MongoClient(connection_sting)
-    database = client["brokerage"]
+    database = client[setting.MONGO_DATABASE]
     return database
 
 
@@ -40,15 +40,15 @@ logger.setLevel(logging.DEBUG)
 logger.debug("it has been started to log...")
 
 brokerage = get_database()
-collection = brokerage["customers"]
+collection = brokerage[setting.CUSTOMER_COLLECTION]
 
 
 def getter(size=10, date="2023-01-31"):
-    """_summary_
+    """Getting List of Customers in Actual Date
 
     Args:
-        size (int, optional): _description_. Defaults to 10.
-        date (str, optional): _description_. Defaults to "2023-01-31".
+        size (int, optional): Page Size in Pagination of Results. Defaults to 10.
+        date (str, optional): Date. Defaults to "2023-01-31".
     """
     temp_req = requests.get(
         "https://tadbirwrapper.tavana.net/tadbir/GetCustomerList",
@@ -64,10 +64,10 @@ def getter(size=10, date="2023-01-31"):
     for page in range(0, total_records // 10 + 1):
         logger.info("Getting Page %d from %d pages", page + 1, total_records // 10 + 1)
         req = requests.get(
-        "https://tadbirwrapper.tavana.net/tadbir/GetCustomerList",
-        params={'request.date': date, 'request.pageIndex': page,
-                'request.pageSize': size},
-        timeout=100
+            "https://tadbirwrapper.tavana.net/tadbir/GetCustomerList",
+            params={'request.date': date, 'request.pageIndex': page,
+                    'request.pageSize': size},
+            timeout=100
         )
         if req.status_code != 200:
             logging.critical("Http response code: %s", req.status_code)
@@ -89,9 +89,10 @@ def getter(size=10, date="2023-01-31"):
     logger.info("Time of getting List of Customers of %s is: %s", date, datetime.datetime.now())
 
 
-today = datetime.date.today()
-logger.info(datetime.datetime.now())
+if __name__ == "__main__":
+    today = datetime.date.today()
+    logger.info(datetime.datetime.now())
 
-getter(date=today)
-logger.info("Ending Time of getting List of Registered Customers in Today: %s",
-            datetime.datetime.now())
+    getter(date=today)
+    logger.info("Ending Time of getting List of Registered Customers in Today: %s",
+                datetime.datetime.now())

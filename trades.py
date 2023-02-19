@@ -1,46 +1,48 @@
-"""_summary_
+"""Get the Trades List from the TadbirWrapper
 
 Raises:
-    RuntimeError: _description_
+    RuntimeError: Server error when getting the trades list (500)
+    OR the trades have Duplicity in Trades
 
 Returns:
-    _type_: _description_
+    Collection : Unique Trades.
 """
 import logging
-import os
 from datetime import date, datetime
 import requests
 from pymongo import MongoClient, errors
+from config import setting
+
 
 with open("/etc/hosts", "a", encoding='utf-8') as file:
     file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
 
 
 def get_database():
-    """_summary_
+    """Getting Database
 
     Returns:
-        _type_: _description_
+        Database: Mongo Database
     """
-    connection_string = os.environ.get("DATABASE_URL")
+    connection_string = setting.MONGO_CONNECTION_STRING
     client = MongoClient(connection_string)
-    database = client["brokerage"]
+    database = client[setting.MONGO_DATABASE]
     return database
 
 
 def get_trades_list(page_size=50, page_index=0, selected_date="2022-12-31"):
-    """_summary_
+    """Getting List of Trades in Selected Date
 
     Args:
-        page_size (int, optional): _description_. Defaults to 50.
-        page_index (int, optional): _description_. Defaults to 0.
-        selected_date (str, optional): _description_. Defaults to "2022-12-31".
+        page_size (int, optional): Page Size in Pagination of Results. Defaults to 50.
+        page_index (int, optional): Page Index in Pagination of Results. Defaults to 0.
+        selected_date (str, optional): Selected Date. Defaults to "2022-12-31".
 
     Raises:
-        RuntimeError: _description_
+        RuntimeError: Server Error.
 
     Returns:
-        _type_: _description_
+        Records: List of Trades in JSON.
     """
     req = requests.get(
         "https://tadbirwrapper.tavana.net/tadbir/GetDailyTradeList",
@@ -55,7 +57,7 @@ def get_trades_list(page_size=50, page_index=0, selected_date="2022-12-31"):
 
 
 def getter():
-    """_summary_
+    """Getting List of Trades in Today.
     """
     logger.info(datetime.now())
     page_index = 0
@@ -95,6 +97,6 @@ if __name__ == "__main__":
     end_date = datetime.now().date()
 
     db = get_database()
-    collection = db["trades"]
+    collection = db[setting.TRADES_COLLECTION]
     getter()
     logger.info("Ending Time of getting List of Trades in Today: %s", datetime.now())

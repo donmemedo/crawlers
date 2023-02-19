@@ -1,16 +1,17 @@
-"""_summary_
+"""Get the Firms List from the TadbirWrapper
 
 Raises:
-    RuntimeError: _description_
+    RuntimeError: Server error when getting the firms list (500)
+    OR the firms have Duplicity in Firms
 
 Returns:
-    _type_: _description_
+    Collection : Unique firms.
 """
 import datetime
 import logging
-import os
 import requests
 from pymongo import MongoClient, errors
+from config import setting
 
 
 with open("/etc/hosts", "a", encoding='utf-8') as file:
@@ -18,14 +19,14 @@ with open("/etc/hosts", "a", encoding='utf-8') as file:
 
 
 def get_database():
-    """_summary_
+    """Getting Database
 
     Returns:
-        _type_: _description_
+        Database: Mongo Database
     """
-    connection_string = os.environ.get("DATABASE_URL")
+    connection_string = setting.MONGO_CONNECTION_STRING
     client = MongoClient(connection_string)
-    database = client["brokerage"]
+    database = client[setting.MONGO_DATABASE]
     return database
 
 
@@ -40,15 +41,15 @@ logger.debug("it has been started to log...")
 
 
 db = get_database()
-collection = db["firms"]
+collection = db[setting.FIRMS_COLLECTION]
 
 
 def getter(size=10, date="2023-01-31"):
-    """_summary_
+    """Getting List of Customers in Actual Date
 
     Args:
-        size (int, optional): _description_. Defaults to 10.
-        date (str, optional): _description_. Defaults to "2023-01-31".
+        size (int, optional): Page Size in Pagination of Results. Defaults to 10.
+        date (str, optional): Date. Defaults to "2023-01-31".
     """
     temp_req = requests.get(
         "https://tadbirwrapper.tavana.net/tadbir/GetFirmList",
@@ -90,9 +91,10 @@ def getter(size=10, date="2023-01-31"):
                 date, datetime.datetime.now())
 
 
-getter(date='')
-today = datetime.date.today()
-logger.info(datetime.datetime.now())
-getter(date=today)
-logger.info("Ending Time of getting List of Registered Firms in Today: %s",
-            datetime.datetime.now())
+if __name__ == "__main__":
+    getter(date='')
+    today = datetime.date.today()
+    logger.info(datetime.datetime.now())
+    getter(date=today)
+    logger.info("Ending Time of getting List of Registered Firms in Today: %s",
+                datetime.datetime.now())

@@ -66,7 +66,16 @@ def getter(size=10, date="2023-01-31"):
 today = datetime.date.today()
 logger.info(datetime.datetime.now())
 
-getter(date=today)
-logger.info(
-    f"Ending Time of getting List of Registered Customers in Today: {datetime.datetime.now()}"
+dates = [
+    datetime.datetime(2023, 2, 21),
+    datetime.datetime(2023, 2, 22),
+    datetime.datetime(2023, 2, 23),
+    datetime.datetime(2023, 2, 24),
+    datetime.datetime(2023, 2, 25),
+    datetime.datetime(2023, 2, 26)
+]
+for d in dates:
+    getter(date=d)
+    logger.info(
+        f"Ending Time of getting List of Registered Customers in Today: {datetime.datetime.now()}"
 )

@@ -39,27 +39,36 @@ def getter():
     logger.info(datetime.now())
     page_index=0
     logger.info(f"Getting trades of {date.today()}")
-    while True:
-        response, total = get_trades_list(page_index=page_index, date=date.today())
-        if not response:
-            logger.info("\t \t \t List is Empty!!!")
-            break
-        else:
-            logger.info(f'Page {page_index+1} of {1+total//50} Pages')
-            for record in response:
-                try:
-                    collection.insert_one(record)
-                    logger.info(f'Added: {record.get("TradeNumber")}, {record.get("TradeDate")}, {record.get("MarketInstrumentISIN")} \n')
-                    logger.info(
-                        f"TradeNumber {record.get('TradeNumber')} added to mongodb"
-                    )
-                except errors.DuplicateKeyError as e:
-                    logging.error("%s" % e)
-            logger.info("\t \t All were gotten!!!")
-            logger.info(
-                f"Time of getting List of Customers of {date.today()} is: {datetime.now()}"
-            )
-        page_index+=1
+    dates = [
+        datetime.datetime(2023, 2, 21),
+        datetime.datetime(2023, 2, 22),
+        datetime.datetime(2023, 2, 23),
+        datetime.datetime(2023, 2, 24),
+        datetime.datetime(2023, 2, 25),
+        datetime.datetime(2023, 2, 26)
+    ]
+    for d in dates:
+        while True:
+            response, total = get_trades_list(page_index=page_index, date=d)
+            if not response:
+                logger.info("\t \t \t List is Empty!!!")
+                break
+            else:
+                logger.info(f'Page {page_index+1} of {1+total//50} Pages')
+                for record in response:
+                    try:
+                        collection.insert_one(record)
+                        logger.info(f'Added: {record.get("TradeNumber")}, {record.get("TradeDate")}, {record.get("MarketInstrumentISIN")} \n')
+                        logger.info(
+                            f"TradeNumber {record.get('TradeNumber')} added to mongodb"
+                        )
+                    except errors.DuplicateKeyError as e:
+                        logging.error("%s" % e)
+                logger.info("\t \t All were gotten!!!")
+                logger.info(
+                    f"Time of getting List of Customers of {date.today()} is: {datetime.now()}"
+                )
+            page_index+=1
 
 
 if __name__ == "__main__":

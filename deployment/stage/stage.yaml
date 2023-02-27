@@ -18,7 +18,7 @@ spec:
             - "/usr/src/app/customer.py"
             env:
             - name: DATABASE_URL
-              value: "mongodb://root:root@mongo-marketer.stg-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:3tliSqt3tDD5Bg@mongo-marketer.stg-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1

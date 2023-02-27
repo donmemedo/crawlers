@@ -40,12 +40,12 @@ def getter():
     page_index=0
     logger.info(f"Getting trades of {date.today()}")
     dates = [
-        datetime.datetime(2023, 2, 21),
-        datetime.datetime(2023, 2, 22),
-        datetime.datetime(2023, 2, 23),
-        datetime.datetime(2023, 2, 24),
-        datetime.datetime(2023, 2, 25),
-        datetime.datetime(2023, 2, 26)
+        datetime(2023, 2, 21),
+        datetime(2023, 2, 22),
+        datetime(2023, 2, 23),
+        datetime(2023, 2, 24),
+        datetime(2023, 2, 25),
+        datetime(2023, 2, 26)
     ]
     for d in dates:
         while True:

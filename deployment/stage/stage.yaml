@@ -41,5 +41,5 @@ spec:
             - "/usr/src/app/trades.py"
             env:
             - name: DATABASE_URL
-              value: "mongodb://root:root@mongo-marketer-headless.stg-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:3tliSqt3tDD5B@mongo-marketer-headless.stg-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure

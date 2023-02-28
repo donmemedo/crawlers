@@ -35,7 +35,7 @@ def get_trades_list(page_size=50, page_index=0, date="2022-12-31"):
 #         yield start_date + timedelta(n)
 
 
-def getter(dum=dumm):
+def getter(dum='2023-02-06'):
     logger.info(datetime.now())
     page_index=0
     logger.info(f"Getting trades of {date.today()}")

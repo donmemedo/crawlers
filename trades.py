@@ -113,9 +113,7 @@ if __name__ == "__main__":
     #
     #         page_index += 1
     
-    getter('2023-02-26')
-    getter('2023-02-27')
-    getter('2023-02-28')
+    
     getter('2023-03-01')
     getter('2023-03-02')
     getter('2023-03-03')
@@ -123,5 +121,8 @@ if __name__ == "__main__":
     getter('2023-03-05')
     getter('2023-03-06')
     getter('2023-03-07')
-
+    getter('2023-03-08')
+    getter('2023-03-09')
+    getter('2023-03-10')
+    
     logger.info(f"Ending Time of getting List of Trades in Today: {datetime.now()}")

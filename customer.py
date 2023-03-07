@@ -63,9 +63,9 @@ def getter(size=10, date="2023-01-31"):
     )
 
 
-today = datetime.date.today()
+day = datetime.date.today() - datetime.timedelta(1)
 logger.info(datetime.datetime.now())
 
-getter(date= today)
+getter(date= day)
 #getter(date='2024-03-02')
 logger.info(f"Ending Time of getting List of Registered Customers in Today: {datetime.datetime.now()}")

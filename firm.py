@@ -85,6 +85,10 @@ def getter(size=10, date="2023-01-31"):
                 logger.info("Record %s added to Mongodb", record.get('PAMCode'))
             except errors.DuplicateKeyError as dup_error:
                 logging.error("%s", dup_error)
+                collection.delete_one({"PAMCode": record.get('PAMCode')})
+                collection.insert_one(record)
+                logger.info("Record %s was Updated", record.get('PAMCode'))
+
 
     logger.info("\n \n \n \t \t All were gotten!!!")
     logger.info("Time of getting List of Firms of %s is: %s",
@@ -98,3 +102,7 @@ if __name__ == "__main__":
     getter(date=today)
     logger.info("Ending Time of getting List of Registered Firms in Today: %s",
                 datetime.datetime.now())
+    getter(date=today-datetime.timedelta(1))
+    logger.info("Ending Time of getting List of Registered Firms in Yesterday: %s",
+                datetime.datetime.now())
+

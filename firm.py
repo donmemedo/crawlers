@@ -102,3 +102,7 @@ if __name__ == "__main__":
     getter(date=today)
     logger.info("Ending Time of getting List of Registered Firms in Today: %s",
                 datetime.datetime.now())
+    getter(date=today-datetime.timedelta(1))
+    logger.info("Ending Time of getting List of Registered Firms in Yesterday: %s",
+                datetime.datetime.now())
+

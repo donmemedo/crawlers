@@ -8,7 +8,7 @@ Returns:
     Collection : Unique Trades.
 """
 import logging
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import requests
 from pymongo import MongoClient, errors
 from config import setting
@@ -63,7 +63,8 @@ def getter():
     page_index = 0
     logger.info("Getting trades of %s", date.today())
     while True:
-        response, total = get_trades_list(page_index=page_index, selected_date=date.today())
+        response, total = get_trades_list(page_index=page_index,
+                                          selected_date=date.today() - timedelta(1))
         if not response:
             logger.info("\t \t \t List is Empty!!!")
             break
@@ -78,7 +79,7 @@ def getter():
             except errors.DuplicateKeyError as dupp_error:
                 logging.error("%s", dupp_error)
         logger.info("\t \t All were gotten!!!")
-        logger.info("Time of getting List of Customers of %s is: %s",
+        logger.info("Time of getting List of Trades of %s is: %s",
                     date.today(), datetime.now())
         page_index += 1
 
@@ -99,4 +100,4 @@ if __name__ == "__main__":
     db = get_database()
     collection = db[setting.TRADES_COLLECTION]
     getter()
-    logger.info("Ending Time of getting List of Trades in Today: %s", datetime.now())
+    logger.info("Ending Time of getting List of Trades in Yesterday: %s", datetime.now())

@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: customer-cron-job
 spec:
-  schedule: "50 7 * * *"
+  schedule: "20 12 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -26,7 +26,7 @@ kind: CronJob
 metadata:
   name: trades-cron-job
 spec:
-  schedule: "0 8 * * *"
+  schedule: "30 12 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -49,7 +49,7 @@ kind: CronJob
 metadata:
   name: firms-cron-job
 spec:
-  schedule: "05 8 * * *"
+  schedule: "25 12 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:

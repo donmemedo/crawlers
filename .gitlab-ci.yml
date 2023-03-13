@@ -92,6 +92,13 @@ deploy-dev:
     - echo "$K8S_STG" | base64 -d > ~/.kube/config
     - sed -i "s/latest/$IMAGE_TAG_PID/g" deployment/dev/dev.yaml
     - kubectl -n "$NAMESPACE_Dev" apply -f deployment/dev/dev.yaml
+  needs:
+    - job: build
+  retry: 2
+  only:
+    - dev
+
+
 
 deploy-dev-SMS:
   stage: Notifications

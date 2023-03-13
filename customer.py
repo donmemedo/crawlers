@@ -94,7 +94,6 @@ def getter(size=10, date="2023-01-31"):
 
 
 if __name__ == "__main__":
-    getter(date='')
     today = datetime.date.today()
     logger.info(datetime.datetime.now())
 
@@ -104,3 +103,4 @@ if __name__ == "__main__":
     getter(date=today-datetime.timedelta(1))
     logger.info("Ending Time of getting List of Registered Customers in Yesterday: %s",
                 datetime.datetime.now())
+    getter(date='2021-03-13')

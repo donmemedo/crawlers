@@ -90,13 +90,8 @@ deploy-dev:
     - mkdir -p ~/.kube
     - chmod 700 ~/.kube
     - echo "$K8S_STG" | base64 -d > ~/.kube/config
+    - sed -i "s/latest/$IMAGE_TAG_PID/g" deployment/dev/dev.yaml
     - kubectl -n "$NAMESPACE_Dev" apply -f deployment/dev/dev.yaml
-    - kubectl set image -n "$NAMESPACE_Dev" deployment/$IMAGE_NAME $IMAGE_NAME=$REGISTRY_HOST/repository/tech1a-docker-registry/$IMAGE_NAME:$IMAGE_TAG_PID
-  needs:
-    - job: build
-  retry: 2
-  only:
-    - dev
 
 deploy-dev-SMS:
   stage: Notifications
@@ -121,8 +116,8 @@ deploy-staging:
     - mkdir -p ~/.kube
     - chmod 700 ~/.kube
     - echo "$K8S_STG" | base64 -d > ~/.kube/config
+    - sed -i "s/latest/$IMAGE_TAG_PID/g" deployment/stage/stage.yaml
     - kubectl -n "$NAMESPACE_Stg" apply -f deployment/stage/stage.yaml
-    - kubectl set image -n "$NAMESPACE_Stg" deployment/$IMAGE_NAME $IMAGE_NAME=$REGISTRY_HOST/repository/tech1a-docker-registry/$IMAGE_NAME:$IMAGE_TAG_PID
   needs:
     - job: build
   retry: 2
@@ -155,8 +150,8 @@ deploy-pro:
     - mkdir -p ~/.kube
     - chmod 700 ~/.kube
     - echo "$K8S_PRO" | base64 -d > ~/.kube/config
+    - sed -i "s/latest/$IMAGE_TAG_TAG/g" deployment/pro/pro.yaml
     - kubectl -n "$NAMESPACE_Pro" apply -f deployment/pro/pro.yaml
-    - kubectl set image -n "$NAMESPACE_Pro" deployment/$IMAGE_NAME $IMAGE_NAME=$REGISTRY_HOST/repository/tech1a-docker-registry/$IMAGE_NAME:$IMAGE_TAG_TAG
   needs:
     - job: build
   retry: 2

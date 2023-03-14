@@ -24,7 +24,7 @@ def get_database():
     Returns:
         Database: Mongo Database
     """
-    connection_sting = setting.MONGO_CONNECTION_STRING
+    connection_sting = "mongodb://root:3tliSqt3tDD5Bg@mongo-marketer-headless.stg-marketer-db.svc.cluster.local:27017/"#setting.MONGO_CONNECTION_STRING
     client = MongoClient(connection_sting)
     database = client[setting.MONGO_DATABASE]
     return database

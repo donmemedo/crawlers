@@ -9,7 +9,7 @@ class Settings(BaseSettings):
 
     """
     VERSION = "0.0.1"
-    MONGO_CONNECTION_STRING = "mongodb://root:1qaz1qaz@localhost:27017/"
+    DATABASE_URL = "mongodb://root:1qaz1qaz@localhost:27017/"
     MONGO_DATABASE = "brokerage"
     CUSTOMER_COLLECTION = "customers"
     FIRMS_COLLECTION = "firms"

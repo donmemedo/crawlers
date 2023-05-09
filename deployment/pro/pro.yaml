@@ -17,7 +17,7 @@ spec:
             - "python3"
             - "/usr/src/app/customer.py"
             env:
-            - name: DATABASE_URL
+            - name: MONGO_CONNECTION_STRING
               value: "mongodb://root:3tliSqt3tDD5Bg@mongo-marketer-headless.pro-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---

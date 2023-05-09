@@ -1,32 +1,19 @@
-"""Get the Customers List from the TadbirWrapper
-
-Raises:
-    RuntimeError: Server error when getting the customers list (500) 
-    OR the customers have Duplicity in Customers
-
-Returns:
-    Collection : Unique customers.
-"""
-import datetime
+import click
 import logging
+from pymongo import MongoClient
 import requests
-from pymongo import MongoClient, errors
 from config import setting
 
 
-with open("/etc/hosts", "a", encoding='utf-8') as file:
-    file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
+# with open("/etc/hosts", "a", encoding='utf-8') as file:
+#    file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
 
 
 def get_database():
-    """Getting Database
-
-    Returns:
-        Database: Mongo Database
-    """
     connection_sting = setting.MONGO_CONNECTION_STRING
     client = MongoClient(connection_sting)
     database = client[setting.MONGO_DATABASE]
+
     return database
 
 
@@ -35,71 +22,65 @@ logging.basicConfig(
     format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
     level=logging.DEBUG,
 )
+
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
-logger.debug("it has been started to log...")
 
 brokerage = get_database()
-collection = brokerage[setting.CUSTOMER_COLLECTION]
 
 
-def getter(size=10, date="2023-01-31"):
-    """Getting List of Customers in Actual Date
+@click.command()
+@click.option(
+    "--date", default="2023-03-23", help="Enter register or modified date of the users"
+)
+def get_customers_by_date(date):
+    CUSTOMER_URL = "https://tadbirwrapper.tavana.net/tadbir/GetCustomerList"
+    PAGE_SIZE = 10
 
-    Args:
-        size (int, optional): Page Size in Pagination of Results. Defaults to 10.
-        date (str, optional): Date. Defaults to "2023-01-31".
-    """
-    temp_req = requests.get(
-        "https://tadbirwrapper.tavana.net/tadbir/GetCustomerList",
-        params={'request.date': date, 'request.pageIndex': 0,
-                'request.pageSize': 1},
-        timeout=100)
-    if temp_req.status_code != 200:
-        logging.critical("Http response code: %s", temp_req.status_code)
-        total_records = 0
-    else:
-        total_records = temp_req.json()["TotalRecords"]
-    logger.info("\t  \t  \t  %s \t  \t  \t  %s", date, total_records)
-    for page in range(0, total_records // 10 + 1):
-        logger.info("Getting Page %d from %d pages", page + 1, total_records // 10 + 1)
-        req = requests.get(
-            "https://tadbirwrapper.tavana.net/tadbir/GetCustomerList",
-            params={'request.date': date, 'request.pageIndex': page,
-                    'request.pageSize': size},
-            timeout=100
+    total_request = requests.get(
+        CUSTOMER_URL,
+        params={
+            "request.date": date,
+            "request.pageSize": PAGE_SIZE,
+            "request.pageIndex": 0,
+        },
+    )
+
+    total_records = int(total_request.json()["TotalRecords"])
+    logger.info(
+        f"{total_records} have been registered or modified in Tadbir system on {date}"
+    )
+
+    for page_index in range(0, total_records // PAGE_SIZE + 1):
+        customer_request = requests.get(
+            CUSTOMER_URL,
+            params={
+                "request.date": date,
+                "request.pageSize": PAGE_SIZE,
+                "request.pageIndex": page_index,
+            },
         )
-        if req.status_code != 200:
-            logging.critical("Http response code: %s", req.status_code)
-            records = ""
-        else:
-            response = req.json()
-            records = response.get("Result")
-        for record in records:
-            if record is None:
-                logger.info("Record is empty.")
-                continue
-            try:
-                collection.insert_one(record)
-                logger.info("Record %s added to Mongodb", record.get('PAMCode'))
-            except errors.DuplicateKeyError as dup_error:
-                logging.error("%s", dup_error)
-                collection.delete_one({"PAMCode": record.get('PAMCode')})
-                collection.insert_one(record)
-                logger.info("Record %s was Updated", record.get('PAMCode'))
+        customers_list = customer_request.json()["Result"]
 
+        for customer in customers_list:
+            if customer is None:
+                logger.info(f"Empty record retrived from Tadbir Systems.")
+            else:
+                user_trade_code = {"PAMCode": customer.get("PAMCode")}
+                logger.info(
+                    f"New customer {user_trade_code} retrived from Tadbier Systems."
+                )
 
-    logger.info("\n \n \n \t \t All were gotten!!!")
-    logger.info("Time of getting List of Customers of %s is: %s", date, datetime.datetime.now())
+                result = next(brokerage.customers.find(user_trade_code), None)
+                
+                if result:
+                    logger.info(f"User {user_trade_code} has been already stored in the database")
+                    brokerage.customers.delete_one(user_trade_code)
+                    logger.info(f"User {user_trade_code} deleted")
+
+                brokerage.customers.insert_one(customer)
+                logger.info(f"User {user_trade_code} has been updated and stored into database")
 
 
 if __name__ == "__main__":
-    today = datetime.date.today()
-    logger.info(datetime.datetime.now())
-
-    getter(date=today)
-    logger.info("Ending Time of getting List of Registered Customers in Today: %s",
-                datetime.datetime.now())
-    getter(date=today-datetime.timedelta(1))
-    logger.info("Ending Time of getting List of Registered Customers in Yesterday: %s",
-                datetime.datetime.now())
+    get_customers_by_date()

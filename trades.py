@@ -1,12 +1,3 @@
-"""Get the Trades List from the TadbirWrapper
-
-Raises:
-    RuntimeError: Server error when getting the trades list (500)
-    OR the trades have Duplicity in Trades
-
-Returns:
-    Collection : Unique Trades.
-"""
 import logging
 from datetime import date, datetime, timedelta
 import requests
@@ -14,36 +5,19 @@ from pymongo import MongoClient, errors
 from config import setting
 
 
-with open("/etc/hosts", "a", encoding='utf-8') as file:
-    file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
+# with open("/etc/hosts", "a", encoding='utf-8') as file:
+    # file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
 
 
 def get_database():
-    """Getting Database
-
-    Returns:
-        Database: Mongo Database
-    """
     connection_string = setting.MONGO_CONNECTION_STRING
     client = MongoClient(connection_string)
     database = client[setting.MONGO_DATABASE]
+
     return database
 
 
 def get_trades_list(page_size=50, page_index=0, selected_date="2022-12-31"):
-    """Getting List of Trades in Selected Date
-
-    Args:
-        page_size (int, optional): Page Size in Pagination of Results. Defaults to 50.
-        page_index (int, optional): Page Index in Pagination of Results. Defaults to 0.
-        selected_date (str, optional): Selected Date. Defaults to "2022-12-31".
-
-    Raises:
-        RuntimeError: Server Error.
-
-    Returns:
-        Records: List of Trades in JSON.
-    """
     req = requests.get(
         "https://tadbirwrapper.tavana.net/tadbir/GetDailyTradeList",
         params={'request.date': selected_date, 'request.pageIndex': page_index,
@@ -57,8 +31,6 @@ def get_trades_list(page_size=50, page_index=0, selected_date="2022-12-31"):
 
 
 def getter():
-    """Getting List of Trades in Today.
-    """
     logger.info(datetime.now())
     page_index = 0
     logger.info("Getting trades of %s", date.today())

@@ -5,8 +5,8 @@ from pymongo import MongoClient, errors
 from config import setting
 
 
-# with open("/etc/hosts", "a", encoding='utf-8') as file:
-    # file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
+with open("/etc/hosts", "a", encoding='utf-8') as file:
+    file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
 
 
 def get_database():

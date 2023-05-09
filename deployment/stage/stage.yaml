@@ -51,7 +51,7 @@ kind: CronJob
 metadata:
   name: firms-cron-job
 spec:
-  schedule: "45 */4 * * *"
+  schedule: "5 7 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:

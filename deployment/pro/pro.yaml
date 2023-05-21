@@ -27,7 +27,7 @@ kind: CronJob
 metadata:
   name: trades-cron-job
 spec:
-  schedule: "0 7,12,17 * * *"
+  schedule: "36 7,12,17 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:

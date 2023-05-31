@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: customer-cron-job
 spec:
-  schedule: "57 1,3,7,11,14,18,21,23 * * *"
+  schedule: "0 5,10,12,16,20 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -19,7 +19,7 @@ spec:
             - "/usr/src/app/customer.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:3tliSqt3tDD5Bg@mongo-marketer-headless.pro-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:1219S4OiIhSXPJmOGfmdlFlsQ121@mongo-marketer-headless.pro-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -27,7 +27,7 @@ kind: CronJob
 metadata:
   name: trades-cron-job
 spec:
-  schedule: "30 10,13,20 * * *"
+  schedule: "40 7,12,17 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -43,7 +43,7 @@ spec:
             - "/usr/src/app/trades.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:3tliSqt3tDD5Bg@mongo-marketer-headless.pro-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:1219S4OiIhSXPJmOGfmdlFlsQ121@mongo-marketer-headless.pro-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -67,5 +67,5 @@ spec:
             - "/usr/src/app/firm.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.pro-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:1219S4OiIhSXPJmOGfmdlFlsQ121@mongo-marketer-headless.pro-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure

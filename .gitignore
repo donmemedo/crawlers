@@ -311,3 +311,5 @@ __pycache__/**
 **/*.db
 **/*.log
 **/*.txt
+deployment
+Dockerfile

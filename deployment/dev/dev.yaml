@@ -75,7 +75,7 @@ kind: CronJob
 metadata:
   name: assets0-cron-job
 spec:
-  schedule: "0 1,5,17 * * *"
+  schedule: "0 1,17 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -169,7 +169,7 @@ spec:
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: assets0-cron-job
+  name: assets4-cron-job
 spec:
   schedule: "4 1,17 * * *"
   successfulJobsHistoryLimit: 3

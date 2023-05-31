@@ -67,7 +67,7 @@ spec:
             - "/usr/src/app/firm.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -75,7 +75,7 @@ kind: CronJob
 metadata:
   name: assets0-cron-job
 spec:
-  schedule: "5 1,7,17 * * *"
+  schedule: "*/2 * * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -91,7 +91,7 @@ spec:
             - "/usr/src/app/assets/assets0.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -115,7 +115,7 @@ spec:
             - "/usr/src/app/assets/assets1.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -139,7 +139,7 @@ spec:
             - "/usr/src/app/assets/assets2.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -163,7 +163,7 @@ spec:
             - "/usr/src/app/assets/assets3.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -187,7 +187,7 @@ spec:
             - "/usr/src/app/assets/assets4.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -211,7 +211,7 @@ spec:
             - "/usr/src/app/assets/assets5.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -235,7 +235,7 @@ spec:
             - "/usr/src/app/assets/assets6.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -259,7 +259,7 @@ spec:
             - "/usr/src/app/assets/assets7.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -283,7 +283,7 @@ spec:
             - "/usr/src/app/assets/assets8.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -307,7 +307,7 @@ spec:
             - "/usr/src/app/assets/assets9.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -331,7 +331,7 @@ spec:
             - "/usr/src/app/assets/assetsa.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -355,7 +355,7 @@ spec:
             - "/usr/src/app/assets/assetsb.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -379,7 +379,7 @@ spec:
             - "/usr/src/app/assets/assetsc.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -403,7 +403,7 @@ spec:
             - "/usr/src/app/assets/assetsd.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -427,7 +427,7 @@ spec:
             - "/usr/src/app/assets/assetse.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -451,6 +451,6 @@ spec:
             - "/usr/src/app/assets/assetsf.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 

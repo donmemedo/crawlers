@@ -27,7 +27,7 @@ kind: CronJob
 metadata:
   name: trades-cron-job
 spec:
-  schedule: "0 6,9,13,16 * * *"
+  schedule: "20 6,9,13,16 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -65,6 +65,390 @@ spec:
             command:
             - "python3"
             - "/usr/src/app/firm.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assets0-cron-job
+spec:
+  schedule: "0 1,5,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assets0-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assets0.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assets1-cron-job
+spec:
+  schedule: "1 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assets1-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assets1.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assets2-cron-job
+spec:
+  schedule: "2 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assets2-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assets2.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assets3-cron-job
+spec:
+  schedule: "3 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assets3-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assets3.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assets0-cron-job
+spec:
+  schedule: "4 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assets4-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assets4.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assets5-cron-job
+spec:
+  schedule: "5 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assets5-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assets5.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assets6-cron-job
+spec:
+  schedule: "6 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assets6-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assets6.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assets7-cron-job
+spec:
+  schedule: "7 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assets7-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assets7.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assets8-cron-job
+spec:
+  schedule: "8 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assets8-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assets8.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assets9-cron-job
+spec:
+  schedule: "9 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assets9-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assets9.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assetsa-cron-job
+spec:
+  schedule: "10 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assetsa-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assetsa.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assetsb-cron-job
+spec:
+  schedule: "11 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assetsb-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assetsb.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assetsc-cron-job
+spec:
+  schedule: "12 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assetsc-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assetsc.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assetsd-cron-job
+spec:
+  schedule: "13 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assetsd-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assetsd.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assetse-cron-job
+spec:
+  schedule: "14 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assetse-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assetse.py"
+            env:
+            - name: MONGO_CONNECTION_STRING
+              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: assetsf-cron-job
+spec:
+  schedule: "15 1,17 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - name: assetsf-cron-job
+            image: "registry.tech1a.co:81/repository/tech1a-docker-registry/crawlers:latest"
+            command:
+            - "python3"
+            - "/usr/src/app/assets/assetsf.py"
             env:
             - name: MONGO_CONNECTION_STRING
               value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"

@@ -307,9 +307,7 @@ poetry.toml
 .vscode/
 venv
 __pycache__/**
-**.BAK
-**.db
-**.log
-**.txt
-deployment
-Dockerfile
+**/*.BAK
+**/*.db
+**/*.log
+**/*.txt

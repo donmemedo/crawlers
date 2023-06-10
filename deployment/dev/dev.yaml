@@ -75,7 +75,7 @@ kind: CronJob
 metadata:
   name: assets0-cron-job
 spec:
-  schedule: "0 1,17 * * *"
+  schedule: "0 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -99,7 +99,7 @@ kind: CronJob
 metadata:
   name: assets1-cron-job
 spec:
-  schedule: "1 1,17 * * *"
+  schedule: "1 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -123,7 +123,7 @@ kind: CronJob
 metadata:
   name: assets2-cron-job
 spec:
-  schedule: "2 1,17 * * *"
+  schedule: "2 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -147,7 +147,7 @@ kind: CronJob
 metadata:
   name: assets3-cron-job
 spec:
-  schedule: "3 1,17 * * *"
+  schedule: "3 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -171,7 +171,7 @@ kind: CronJob
 metadata:
   name: assets4-cron-job
 spec:
-  schedule: "4 1,17 * * *"
+  schedule: "4 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -195,7 +195,7 @@ kind: CronJob
 metadata:
   name: assets5-cron-job
 spec:
-  schedule: "5 1,17 * * *"
+  schedule: "5 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -219,7 +219,7 @@ kind: CronJob
 metadata:
   name: assets6-cron-job
 spec:
-  schedule: "6 1,17 * * *"
+  schedule: "6 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -243,7 +243,7 @@ kind: CronJob
 metadata:
   name: assets7-cron-job
 spec:
-  schedule: "7 1,17 * * *"
+  schedule: "7 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -267,7 +267,7 @@ kind: CronJob
 metadata:
   name: assets8-cron-job
 spec:
-  schedule: "8 1,17 * * *"
+  schedule: "8 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -291,7 +291,7 @@ kind: CronJob
 metadata:
   name: assets9-cron-job
 spec:
-  schedule: "9 1,17 * * *"
+  schedule: "9 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -315,7 +315,7 @@ kind: CronJob
 metadata:
   name: assetsa-cron-job
 spec:
-  schedule: "10 1,17 * * *"
+  schedule: "10 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -339,7 +339,7 @@ kind: CronJob
 metadata:
   name: assetsb-cron-job
 spec:
-  schedule: "11 1,17 * * *"
+  schedule: "11 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -363,7 +363,7 @@ kind: CronJob
 metadata:
   name: assetsc-cron-job
 spec:
-  schedule: "12 1,17 * * *"
+  schedule: "12 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -387,7 +387,7 @@ kind: CronJob
 metadata:
   name: assetsd-cron-job
 spec:
-  schedule: "13 1,17 * * *"
+  schedule: "13 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -411,7 +411,7 @@ kind: CronJob
 metadata:
   name: assetse-cron-job
 spec:
-  schedule: "14 1,17 * * *"
+  schedule: "14 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -435,7 +435,7 @@ kind: CronJob
 metadata:
   name: assetsf-cron-job
 spec:
-  schedule: "15 1,17 * * *"
+  schedule: "15 9 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:

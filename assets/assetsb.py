@@ -1,4 +1,4 @@
-import logging
+from logger import logger
 from datetime import datetime
 import requests
 from pymongo import MongoClient, errors
@@ -17,22 +17,11 @@ def get_database():
     Returns:
         Database: Mongo Database
     """
-    # connection_string = "mongodb://root:root@172.24.65.106:30001/"
-    # client = MongoClient(connection_string)
-    # database = client["brokerage"]
     connection_string = setting.MONGO_CONNECTION_STRING
     client = MongoClient(connection_string)
     database = client[setting.MONGO_DATABASE]
     return database
 
-
-logging.basicConfig(
-    encoding="utf-8",
-    format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
-    level=logging.DEBUG,
-)
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
 logger.debug("it has been started to log...")
 db = get_database()
 
@@ -108,6 +97,7 @@ def get_assets(pam="18692280625164", nat="2280625164"):
 
 
 if __name__ == "__main__":
+    logger.info("Thread (B) is started successfully.")
     # get_national()
     sto = time.time()
     db = get_database()

@@ -67,7 +67,7 @@ spec:
             - "/usr/src/app/firm.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -75,7 +75,7 @@ kind: CronJob
 metadata:
   name: assets0-cron-job
 spec:
-  schedule: "0 1,17 * * *"
+  schedule: "30 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -91,7 +91,7 @@ spec:
             - "/usr/src/app/assets/assets0.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -99,7 +99,7 @@ kind: CronJob
 metadata:
   name: assets1-cron-job
 spec:
-  schedule: "1 1,17 * * *"
+  schedule: "31 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -115,7 +115,7 @@ spec:
             - "/usr/src/app/assets/assets1.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -123,7 +123,7 @@ kind: CronJob
 metadata:
   name: assets2-cron-job
 spec:
-  schedule: "2 1,17 * * *"
+  schedule: "32 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -139,7 +139,7 @@ spec:
             - "/usr/src/app/assets/assets2.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -147,7 +147,7 @@ kind: CronJob
 metadata:
   name: assets3-cron-job
 spec:
-  schedule: "3 1,17 * * *"
+  schedule: "33 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -163,7 +163,7 @@ spec:
             - "/usr/src/app/assets/assets3.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -171,7 +171,7 @@ kind: CronJob
 metadata:
   name: assets4-cron-job
 spec:
-  schedule: "4 1,17 * * *"
+  schedule: "34 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -187,7 +187,7 @@ spec:
             - "/usr/src/app/assets/assets4.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -195,7 +195,7 @@ kind: CronJob
 metadata:
   name: assets5-cron-job
 spec:
-  schedule: "5 1,17 * * *"
+  schedule: "35 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -211,7 +211,7 @@ spec:
             - "/usr/src/app/assets/assets5.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -219,7 +219,7 @@ kind: CronJob
 metadata:
   name: assets6-cron-job
 spec:
-  schedule: "6 1,17 * * *"
+  schedule: "36 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -235,7 +235,7 @@ spec:
             - "/usr/src/app/assets/assets6.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -243,7 +243,7 @@ kind: CronJob
 metadata:
   name: assets7-cron-job
 spec:
-  schedule: "7 1,17 * * *"
+  schedule: "37 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -259,7 +259,7 @@ spec:
             - "/usr/src/app/assets/assets7.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -267,7 +267,7 @@ kind: CronJob
 metadata:
   name: assets8-cron-job
 spec:
-  schedule: "8 1,17 * * *"
+  schedule: "38 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -283,7 +283,7 @@ spec:
             - "/usr/src/app/assets/assets8.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -291,7 +291,7 @@ kind: CronJob
 metadata:
   name: assets9-cron-job
 spec:
-  schedule: "9 1,17 * * *"
+  schedule: "39 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -307,7 +307,7 @@ spec:
             - "/usr/src/app/assets/assets9.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -315,7 +315,7 @@ kind: CronJob
 metadata:
   name: assetsa-cron-job
 spec:
-  schedule: "10 1,17 * * *"
+  schedule: "40 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -331,7 +331,7 @@ spec:
             - "/usr/src/app/assets/assetsa.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -339,7 +339,7 @@ kind: CronJob
 metadata:
   name: assetsb-cron-job
 spec:
-  schedule: "11 1,17 * * *"
+  schedule: "41 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -355,7 +355,7 @@ spec:
             - "/usr/src/app/assets/assetsb.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -363,7 +363,7 @@ kind: CronJob
 metadata:
   name: assetsc-cron-job
 spec:
-  schedule: "12 1,17 * * *"
+  schedule: "42 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -379,7 +379,7 @@ spec:
             - "/usr/src/app/assets/assetsc.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -387,7 +387,7 @@ kind: CronJob
 metadata:
   name: assetsd-cron-job
 spec:
-  schedule: "13 1,17 * * *"
+  schedule: "43 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -403,7 +403,7 @@ spec:
             - "/usr/src/app/assets/assetsd.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -411,7 +411,7 @@ kind: CronJob
 metadata:
   name: assetse-cron-job
 spec:
-  schedule: "14 1,17 * * *"
+  schedule: "44 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -427,7 +427,7 @@ spec:
             - "/usr/src/app/assets/assetse.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1beta1
@@ -435,7 +435,7 @@ kind: CronJob
 metadata:
   name: assetsf-cron-job
 spec:
-  schedule: "15 1,17 * * *"
+  schedule: "45 5 * * *"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
@@ -451,6 +451,6 @@ spec:
             - "/usr/src/app/assets/assetsf.py"
             env:
             - name: MONGO_CONNECTION_STRING
-              value: "mongodb://root:root@mongo-marketer.dev-marketer-db.svc.cluster.local:27017/"
+              value: "mongodb://root:root@mongo-marketer-headless.dev-marketer-db.svc.cluster.local:27017/"
           restartPolicy: OnFailure
 

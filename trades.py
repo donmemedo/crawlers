@@ -7,7 +7,6 @@ Raises:
 Returns:
     Collection : Unique Trades.
 """
-# import logging
 from logger import logger
 from datetime import date, datetime, timedelta
 import requests
@@ -86,13 +85,6 @@ def getter():
 
 
 if __name__ == "__main__":
-    # logging.basicConfig(
-    #     encoding="utf-8",
-    #     format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
-    #     level=logging.DEBUG,
-    # )
-    # logger = logging.getLogger()
-    # logger.setLevel(logging.DEBUG)
     logger.debug("it has been started to log...")
 
     start_date = date(2023, 1, 23)

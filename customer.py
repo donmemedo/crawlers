@@ -8,7 +8,6 @@ Returns:
     Collection : Unique customers.
 """
 import datetime
-# import logging
 from logger import logger
 import requests
 from pymongo import MongoClient, errors
@@ -30,14 +29,6 @@ def get_database():
     database = client[setting.MONGO_DATABASE]
     return database
 
-
-# logging.basicConfig(
-#     encoding="utf-8",
-#     format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
-#     level=logging.DEBUG,
-# )
-# logger = logging.getLogger()
-# logger.setLevel(logging.DEBUG)
 logger.debug("it has been started to log...")
 
 brokerage = get_database()

@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     CUSTOMER_COLLECTION = "customers"
     FIRMS_COLLECTION = "firms"
     TRADES_COLLECTION = "trades"
+    SPLUNK_HOST = "172.24.65.206"
+    SPLUNK_PORT = 5141
+    SPLUNK_INDEX = "dev"
+
 
 
 setting = Settings()

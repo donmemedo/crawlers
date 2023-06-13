@@ -8,7 +8,8 @@ Returns:
     Collection : Unique customers.
 """
 import datetime
-import logging
+# import logging
+from logger import logger
 import requests
 from pymongo import MongoClient, errors
 from config import setting
@@ -30,13 +31,13 @@ def get_database():
     return database
 
 
-logging.basicConfig(
-    encoding="utf-8",
-    format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
-    level=logging.DEBUG,
-)
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+# logging.basicConfig(
+#     encoding="utf-8",
+#     format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+#     level=logging.DEBUG,
+# )
+# logger = logging.getLogger()
+# logger.setLevel(logging.DEBUG)
 logger.debug("it has been started to log...")
 
 brokerage = get_database()
@@ -56,7 +57,7 @@ def getter(size=10, date="2023-01-31"):
                 'request.pageSize': 1},
         timeout=100)
     if temp_req.status_code != 200:
-        logging.critical("Http response code: %s", temp_req.status_code)
+        logger.critical("Http response code: %s", temp_req.status_code)
         total_records = 0
     else:
         total_records = temp_req.json()["TotalRecords"]
@@ -70,7 +71,7 @@ def getter(size=10, date="2023-01-31"):
             timeout=100
         )
         if req.status_code != 200:
-            logging.critical("Http response code: %s", req.status_code)
+            logger.critical("Http response code: %s", req.status_code)
             records = ""
         else:
             response = req.json()
@@ -83,7 +84,7 @@ def getter(size=10, date="2023-01-31"):
                 collection.insert_one(record)
                 logger.info("Record %s added to Mongodb", record.get('PAMCode'))
             except errors.DuplicateKeyError as dup_error:
-                logging.error("%s", dup_error)
+                logger.error("%s", dup_error)
                 collection.delete_one({"PAMCode": record.get('PAMCode')})
                 collection.insert_one(record)
                 logger.info("Record %s was Updated", record.get('PAMCode'))

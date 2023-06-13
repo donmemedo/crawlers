@@ -7,7 +7,8 @@ Raises:
 Returns:
     Collection : Unique Trades.
 """
-import logging
+# import logging
+from logger import logger
 from datetime import date, datetime, timedelta
 import requests
 from pymongo import MongoClient, errors
@@ -50,7 +51,7 @@ def get_trades_list(page_size=50, page_index=0, selected_date="2022-12-31"):
                 'request.pageSize': page_size},
         timeout=100)
     if req.status_code != 200:
-        logging.critical("Http response code: %s", req.status_code)
+        logger.critical("Http response code: %s", req.status_code)
         return "", 0
     response = req.json()
     return response.get("Result"), response.get("TotalRecords")
@@ -77,7 +78,7 @@ def getter():
                     record.get("TradeDate"), record.get("MarketInstrumentISIN"))
                 logger.info("TradeNumber %s added to mongodb", record.get('TradeNumber'))
             except errors.DuplicateKeyError as dupp_error:
-                logging.error("%s", dupp_error)
+                logger.error("%s", dupp_error)
         logger.info("\t \t All were gotten!!!")
         logger.info("Time of getting List of Trades of %s is: %s",
                     date.today(), datetime.now())
@@ -85,13 +86,13 @@ def getter():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        encoding="utf-8",
-        format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
-        level=logging.DEBUG,
-    )
-    logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+    # logging.basicConfig(
+    #     encoding="utf-8",
+    #     format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+    #     level=logging.DEBUG,
+    # )
+    # logger = logging.getLogger()
+    # logger.setLevel(logging.DEBUG)
     logger.debug("it has been started to log...")
 
     start_date = date(2023, 1, 23)

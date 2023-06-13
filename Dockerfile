@@ -5,8 +5,10 @@ FROM registry.tech1a.co:81/repository/tech1a-docker-registry/python/python:3.9
 WORKDIR /usr/src/app
 
 # set environment variables
+ENV TZ=Asia/Tehran
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+
 
 # install system dependencies
 RUN apt-get update \

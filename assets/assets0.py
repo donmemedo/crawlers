@@ -1,4 +1,5 @@
-import logging
+# import logging
+from logger import logger
 from datetime import datetime
 import requests
 from pymongo import MongoClient, errors
@@ -26,13 +27,13 @@ def get_database():
     return database
 
 
-logging.basicConfig(
-    encoding="utf-8",
-    format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
-    level=logging.DEBUG,
-)
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+# logging.basicConfig(
+#     encoding="utf-8",
+#     format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+#     level=logging.DEBUG,
+# )
+# logger = logging.getLogger()
+# logger.setLevel(logging.DEBUG)
 logger.debug("it has been started to log...")
 db = get_database()
 

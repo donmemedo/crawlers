@@ -51,7 +51,6 @@ def get_national():
 
 def get_assets(pam="18692280625164", nat="2280625164"):
     db = get_database()
-    pam_coll = db["pamcodes"]
     mom_coll = db["momentaryassets"]
     rem_coll = db["remain"]
     try:
@@ -62,7 +61,8 @@ def get_assets(pam="18692280625164", nat="2280625164"):
             timeout=100,
         )
         end = time.time()
-    except:
+    except requests.RequestException as err:
+        logger.warning("CustomerAssets request failed for %s: %s", pam, err)
         return
     if temp_req.status_code == 200:
         total_records = temp_req.json()
@@ -122,6 +122,6 @@ if __name__ == "__main__":
             j = j + 1
             logger.info(timer / j)
     endo = time.time()
-    logger.info(f"Running Average Time for {group_sep} is {timer/j}")
+    logger.info(f"Running Average Time for {group_sep} is {timer / max(j, 1)}")
     logger.info(f"Number of {group_sep}s is {j}")
     logger.info(f"Total Running Time for {group_sep} is {endo-sto}")

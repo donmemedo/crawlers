@@ -47,9 +47,8 @@ def getter(size=10, date="2023-01-31"):
         timeout=100)
     if temp_req.status_code != 200:
         logger.critical("Http response code: %s", temp_req.status_code)
-        total_records = 0
-    else:
-        total_records = temp_req.json()["TotalRecords"]
+        raise RuntimeError(f"GetFirmList count for {date} failed: HTTP {temp_req.status_code}")
+    total_records = temp_req.json()["TotalRecords"]
     logger.info("\t  \t  \t  %s \t  \t  \t  %s",date,total_records)
     pages = total_records // size + 1
     for page in range(pages):
@@ -62,10 +61,8 @@ def getter(size=10, date="2023-01-31"):
         )
         if req.status_code != 200:
             logger.critical("Http response code: %s", req.status_code)
-            records = ""
-        else:
-            response = req.json()
-            records = response.get("Result")
+            raise RuntimeError(f"GetFirmList page {page} for {date} failed: HTTP {req.status_code}")
+        records = req.json().get("Result") or []
         for record in records:
             if record is None:
                 logger.info("Record is empty.")

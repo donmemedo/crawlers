@@ -83,6 +83,10 @@ def getter():
         logger.info("Time of getting List of Trades of %s is: %s",
                     selected_date, datetime.now())
         page_index += 1
+    else:
+        # every page up to the spare one held records: TotalRecords is understated or the API repeats pages
+        raise RuntimeError(
+            f"GetDailyTradeList still returned records after {pages} pages for {selected_date}")
 
 
 if __name__ == "__main__":

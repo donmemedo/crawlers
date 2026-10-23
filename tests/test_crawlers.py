@@ -102,13 +102,26 @@ def test_http_error_fails_the_job(paged, monkeypatch, fail_on):
     assert paged.collection.inserted == []
 
 
-def test_null_result_is_an_empty_page(paged, monkeypatch):
+def test_null_result_on_the_spare_last_page_is_an_empty_page(paged, monkeypatch):
+    def fake_get(url, params=None, timeout=None):
+        index, size = params["request.pageIndex"], params["request.pageSize"]
+        if size == 1:
+            return Resp(200, {"TotalRecords": 10})
+        rows = [{"PAMCode": str(i)} for i in range(10)] if index == 0 else None
+        return Resp(200, {"TotalRecords": 10, "Result": rows})
+
+    monkeypatch.setattr(paged.requests, "get", fake_get)
+    paged.getter(size=10, date="2024-01-01")
+    assert len(paged.collection.inserted) == 10
+
+
+def test_null_result_inside_the_promised_range_fails_the_job(paged, monkeypatch):
     def fake_get(url, params=None, timeout=None):
         return Resp(200, {"TotalRecords": 3, "Result": None})
 
     monkeypatch.setattr(paged.requests, "get", fake_get)
-    paged.getter(date="2024-01-01")
-    assert paged.collection.inserted == []
+    with pytest.raises(RuntimeError, match="no Result"):
+        paged.getter(date="2024-01-01")
 
 
 def test_duplicate_is_replaced_not_deleted_and_reinserted(paged, monkeypatch):
@@ -155,7 +168,7 @@ def test_trades_http_error_fails_the_job(monkeypatch):
         trades.get_trades_list(page_index=0, selected_date="2024-01-01")
 
 
-def test_trades_stops_when_the_api_repeats_its_last_page(monkeypatch):
+def test_trades_fails_instead_of_looping_when_the_api_repeats_its_last_page(monkeypatch):
     trades = importlib.import_module("trades")
     monkeypatch.setattr(trades, "collection", FakeCollection(), raising=False)
     calls = []
@@ -166,8 +179,26 @@ def test_trades_stops_when_the_api_repeats_its_last_page(monkeypatch):
         return Resp(200, {"TotalRecords": 120, "Result": [{"TradeNumber": i} for i in range(50)]})
 
     monkeypatch.setattr(trades.requests, "get", fake_get)
+    with pytest.raises(RuntimeError, match="still returned records"):
+        trades.getter()
+    assert len(calls) == 4
+
+
+def test_trades_normal_run_ends_on_the_empty_page(monkeypatch):
+    trades = importlib.import_module("trades")
+    collection = FakeCollection()
+    monkeypatch.setattr(trades, "collection", collection, raising=False)
+    calls = []
+
+    def fake_get(url, params=None, timeout=None):
+        index = params["request.pageIndex"]
+        calls.append(index)
+        rows = [{"TradeNumber": index * 50 + i} for i in range({0: 50, 1: 50, 2: 20}.get(index, 0))]
+        return Resp(200, {"TotalRecords": 120, "Result": rows})
+
+    monkeypatch.setattr(trades.requests, "get", fake_get)
     trades.getter()
-    assert len(calls) <= 4
+    assert calls == [0, 1, 2, 3] and len(collection.inserted) == 120
 
 
 def test_pin_host_is_idempotent_and_keeps_existing_lines(tmp_path):
@@ -176,6 +207,20 @@ def test_pin_host_is_idempotent_and_keeps_existing_lines(tmp_path):
     hosts.pin_tadbir_host(str(hosts_file))
     hosts.pin_tadbir_host(str(hosts_file))
     assert hosts_file.read_text().splitlines() == ["127.0.0.1 localhost", hosts.HOSTS_LINE]
+
+
+@pytest.mark.parametrize("content,already_pinned", [
+    (b"# 172.20.20.120 tadbirwrapper.tavana.net\n", False),  # commented out
+    (b"172.20.20.120 tadbirwrapper.tavana.net.evil\n", False),  # different name
+    (b"172.20.20.120\ttadbirwrapper.tavana.net\r\n", True),  # tab + CRLF still counts
+    (b"\xff\xfe not utf-8\n", False),  # must not raise
+])
+def test_pin_host_only_trusts_a_real_entry(tmp_path, content, already_pinned):
+    hosts_file = tmp_path / "hosts"
+    hosts_file.write_bytes(content)
+    hosts.pin_tadbir_host(str(hosts_file))
+    added = hosts_file.read_bytes()[len(content):]
+    assert added == (b"" if already_pinned else (hosts.HOSTS_LINE + "\n").encode())
 
 
 def test_pin_host_never_fails_the_job(tmp_path):

@@ -62,7 +62,11 @@ def getter(size=10, date="2023-01-31"):
         if req.status_code != 200:
             logger.critical("Http response code: %s", req.status_code)
             raise RuntimeError(f"GetFirmList page {page} for {date} failed: HTTP {req.status_code}")
-        records = req.json().get("Result") or []
+        records = req.json().get("Result")
+        if records is None:
+            if page * size < total_records:  # inside the range the count promised: a gap, not the spare last page
+                raise RuntimeError(f"GetFirmList page {page} for {date} returned no Result")
+            records = []
         for record in records:
             if record is None:
                 logger.info("Record is empty.")

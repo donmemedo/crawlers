@@ -12,10 +12,7 @@ from datetime import date, datetime, timedelta
 import requests
 from pymongo import MongoClient, errors
 from config import setting
-
-
-with open("/etc/hosts", "a", encoding='utf-8') as file:
-    file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
+from hosts import pin_tadbir_host
 
 
 def get_database():
@@ -85,6 +82,7 @@ def getter():
 
 
 if __name__ == "__main__":
+    pin_tadbir_host()
     logger.debug("it has been started to log...")
 
     start_date = date(2023, 1, 23)

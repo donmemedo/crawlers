@@ -12,10 +12,7 @@ from logger import logger
 import requests
 from pymongo import MongoClient, errors
 from config import setting
-
-
-with open("/etc/hosts", "a", encoding='utf-8') as file:
-    file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
+from hosts import pin_tadbir_host
 
 
 def get_database():
@@ -86,6 +83,7 @@ def getter(size=10, date="2023-01-31"):
 
 
 if __name__ == "__main__":
+    pin_tadbir_host()
     today = datetime.date.today()
     logger.info(datetime.datetime.now())
 

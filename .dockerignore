@@ -1,0 +1,16 @@
+# keep history, deployment manifests, docs and tooling out of the image (`COPY . .`)
+.git
+.gitignore
+.gitlab-ci.yml
+.claude
+CLAUDE.md
+graphify-out
+deployment
+docs
+scripts
+setup-claude-project.sh
+tests
+*.md
+__pycache__
+.pytest_cache
+.ruff_cache

@@ -5,10 +5,7 @@ from pymongo import MongoClient, errors
 from khayyam import JalaliDatetime as jd
 import time
 from config import setting
-
-
-with open("/etc/hosts", "a", encoding='utf-8') as file:
-    file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
+from hosts import pin_tadbir_host
 
 
 def get_database():
@@ -97,6 +94,7 @@ def get_assets(pam="18692280625164", nat="2280625164"):
 
 
 if __name__ == "__main__":
+    pin_tadbir_host()
     logger.info("Thread (F) is started successfully.")
     # get_national()
     sto = time.time()

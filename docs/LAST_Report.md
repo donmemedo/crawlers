@@ -132,8 +132,15 @@ path; at most `total // 50 + 2` requests per trades run instead of unbounded; no
 - It found that my claim "the only behavior change is raising on HTTP errors" was incomplete and found two
   hardening gaps in `hosts.py`. All were then addressed in the last two commits (null `Result` handling, loud failure when
   `TotalRecords` is understated, exact-entry matching and non-UTF-8 tolerance in the hosts pin) and are listed in
-  `HANDOFF.md`. After those fixes the suite is 33 tests, all passing, ruff clean (re-run by the author, not
-  re-verified by the verifier).
+  `HANDOFF.md`. After those fixes the suite is 33 tests, all passing, ruff clean.
+- A second, scoped `verifier` pass on those two commits (`6f0dde0..HEAD`) also returned **PASS**: 33 passed, ruff clean;
+  320-case differential runs against the earlier commit showed identical behavior for correct pagination
+  (customers/firms and trades); the new errors fire only for a null `Result` inside the page range or an
+  understated/repeating trades total; six more mutants were all caught; no secrets in 318 added lines.
+- Known gaps it listed, all unchanged from the base and not introduced here: an in-range `Result: []` page is accepted
+  silently; `trades.py` stops silently on an empty in-range page; an error in `firm.py`'s first `getter(date='')` call
+  skips its later today/yesterday crawls; the hosts pin is appended even when an earlier line maps the name elsewhere
+  (the first match wins).
 - Still unverified: Python 3.9 and the pinned dependencies, docker build/runtime, real MongoDB indexes, the real
   API, downstream reliance on `_id` stability; CI does not run the tests and the `mongomock` test is skipped when
   `mongomock` is not installed.

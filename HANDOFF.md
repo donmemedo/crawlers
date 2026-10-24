@@ -48,6 +48,7 @@ Behavior changes beyond the HTTP-error one (called out by the independent verifi
 5. **Consolidate** the 16 `assets*.py` into one script taking the group as an argument (about 1,900 duplicated lines) and share one `get_database()` (19 copies). Needs `dev.yaml` command changes, so it was left out.
 6. **Observability**: one summary line per run (job, window, outcome, expected/fetched/inserted/updated, duration); stop logging expected duplicates at ERROR; `logger.py` has dead uvicorn config, a non-existent `modulename` field and colors in `kubectl logs`; `SPLUNK_INDEX` is unused.
 7. Validate the API response at the boundary (type and size of `TotalRecords`, allow-listed fields) and cap `.json()` sizes.
+8. Silent-gap paths the verifier listed, unchanged from the base: an in-range `Result: []` page is accepted silently; `trades.py` stops silently on an empty in-range page; an error in `firm.py`'s first `getter(date='')` call skips the later today/yesterday crawls. Decide whether each should fail the job (same question as D4).
 
 ## Not verified / not run
 `docker build` and anything that needs the private registry or a cluster; a real MongoDB or the real API (no request was sent to any external or internal system); the GitLab pipeline; hadolint/trivy/gitleaks (not installed); a penetration test (static review only). Python 3.9 (the image) was not available locally: tests ran on 3.12.

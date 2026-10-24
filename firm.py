@@ -12,10 +12,7 @@ from logger import logger
 import requests
 from pymongo import MongoClient, errors
 from config import setting
-
-
-with open("/etc/hosts", "a", encoding='utf-8') as file:
-    file.write("172.20.20.120 tadbirwrapper.tavana.net\n")
+from hosts import pin_tadbir_host
 
 
 def get_database():
@@ -50,12 +47,12 @@ def getter(size=10, date="2023-01-31"):
         timeout=100)
     if temp_req.status_code != 200:
         logger.critical("Http response code: %s", temp_req.status_code)
-        total_records = 0
-    else:
-        total_records = temp_req.json()["TotalRecords"]
+        raise RuntimeError(f"GetFirmList count for {date} failed: HTTP {temp_req.status_code}")
+    total_records = temp_req.json()["TotalRecords"]
     logger.info("\t  \t  \t  %s \t  \t  \t  %s",date,total_records)
-    for page in range(0, total_records // 10 + 1):
-        logger.info("Getting Page %d from %d pages", page + 1, total_records // 10 + 1)
+    pages = total_records // size + 1
+    for page in range(pages):
+        logger.info("Getting Page %d from %d pages", page + 1, pages)
         req = requests.get(
             "https://tadbirwrapper.tavana.net/tadbir/GetFirmList",
             params={'request.date': date, 'request.pageIndex': page,
@@ -64,10 +61,12 @@ def getter(size=10, date="2023-01-31"):
         )
         if req.status_code != 200:
             logger.critical("Http response code: %s", req.status_code)
-            records = ""
-        else:
-            response = req.json()
-            records = response.get("Result")
+            raise RuntimeError(f"GetFirmList page {page} for {date} failed: HTTP {req.status_code}")
+        records = req.json().get("Result")
+        if records is None:
+            if page * size < total_records:  # inside the range the count promised: a gap, not the spare last page
+                raise RuntimeError(f"GetFirmList page {page} for {date} returned no Result")
+            records = []
         for record in records:
             if record is None:
                 logger.info("Record is empty.")
@@ -77,9 +76,14 @@ def getter(size=10, date="2023-01-31"):
                 logger.info("Record %s added to Mongodb", record.get('PAMCode'))
             except errors.DuplicateKeyError as dup_error:
                 logger.error("%s", dup_error)
-                collection.delete_one({"PAMCode": record.get('PAMCode')})
-                collection.insert_one(record)
-                logger.info("Record %s was Updated", record.get('PAMCode'))
+                pam_code = record.get('PAMCode')
+                if pam_code is None or isinstance(pam_code, (dict, list)):
+                    # a missing or operator-shaped upstream value must never become a Mongo filter
+                    logger.error("Duplicate record without a plain PAMCode was not updated")
+                    continue
+                record.pop('_id', None)  # the failed insert_one stamped a new _id; replace cannot change the stored one
+                collection.replace_one({"PAMCode": pam_code}, record, upsert=True)
+                logger.info("Record %s was Updated", pam_code)
 
 
     logger.info("\n \n \n \t \t All were gotten!!!")
@@ -88,6 +92,7 @@ def getter(size=10, date="2023-01-31"):
 
 
 if __name__ == "__main__":
+    pin_tadbir_host()
     getter(date='')
     today = datetime.date.today()
     logger.info(datetime.datetime.now())

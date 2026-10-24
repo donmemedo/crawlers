@@ -6,6 +6,8 @@ WORKDIR /usr/src/app
 
 # set environment variables
 ENV TZ=Asia/Tehran
+# CronJobs run assets/assetsN.py, whose script directory is sys.path[0]; logger, config and hosts live in the app root
+ENV PYTHONPATH=/usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 

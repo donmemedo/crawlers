@@ -157,6 +157,7 @@ deploy-pro:
     - mkdir -p ~/.kube
     - chmod 700 ~/.kube
     - echo "$K8S_PRO" | base64 -d > ~/.kube/config
+    - 'test -n "$IMAGE_TAG_TAG" || { echo "deploy-pro needs a tag pipeline, IMAGE_TAG_TAG is empty so the image would be invalid"; exit 1; }'
     - sed -i "s/latest/$IMAGE_TAG_TAG/g" deployment/pro/pro.yaml
     - kubectl -n "$NAMESPACE_Pro" apply -f deployment/pro/pro.yaml
   needs:

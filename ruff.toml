@@ -1,0 +1,6 @@
+target-version = "py39"
+extend-exclude = [".claude", "graphify-out"]
+
+[lint]
+# errors only (syntax, undefined/unused names, bare except); style rules would churn the 16 assets copies
+select = ["E4", "E7", "E9", "F"]

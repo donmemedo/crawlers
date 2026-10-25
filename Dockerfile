@@ -1,5 +1,5 @@
 ## pull official base image
-FROM registry.tech1a.co:81/repository/tech1a-docker-registry/python/python:3.9
+FROM python:3.13.6-alpine
 
 # set working directory
 WORKDIR /usr/src/app
